@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lmz.dao.EmpMapper">
+	<select id="selectCounts" parameterType="fenye" resultType="int">
+		SELECT COUNT(id) FROM emp
+		<where>
+			<if test="ename !=null and ename !=''">
+				and ename like "%"#{ename} "%"
+			</if>
+			<if test="esex !=null and esex !=''">
+				and esex =#{esex}
+			</if>
+			<if test="startSale>0">
+				and sale &gt;=#{startSale}
+			</if>
+			<if test="endSale>0">
+				and sale &lt;=#{endSale}
+			</if>
+		</where>
+	</select>
+	<select id="selectEmp" parameterType="fenye" resultType="emp">
+		SELECT id,ename,esex,eage,sale FROM emp
+
+		<where>
+			<if test="ename !=null and ename !=''">
+				and ename like "%"#{ename} "%"
+			</if>
+			<if test="esex !=null and esex !=''">
+				and esex =#{esex}
+			</if>
+			<if test="startSale>0">
+				and sale &gt;=#{startSale}
+			</if>
+			<if test="endSale>0">
+				and sale &lt;=#{endSale}
+			</if>
+		</where>
+		limit #{page},#{pageSize}
+	</select>
+	<update id="updateEmp" parameterType="emp">
+		update emp
+		<set>
+			<if test="ename !=null and ename !=''">
+				ename =#{ename},
+			</if>
+			<if test="esex !=null and esex !=''">
+				esex =#{esex},
+			</if>
+			<if test="eage !=null and eage !=''">
+				eage =#{eage},
+			</if>
+			<if test="sale !=null and sale !=''">
+				sale =#{sale},
+			</if>
+
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+	<delete id="deleteEmp" parameterType="int">
+		delete from emp where id=#{id}
+	</delete>
+	<insert id="addEmp" parameterType="emp">
+		insert into emp(ename,esex,eage,sale)
+		values(#{ename},#{esex},#{eage},#{sale})
+	</insert>
+</mapper>
